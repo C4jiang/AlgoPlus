@@ -14,7 +14,7 @@ AlgoPlus是上期技术CTP API的Python封装。
 
 | AlgoPlus版本号 | CTP API版本 | Python版本 |
 |  :----:  | :----:  | :----:  |
-| 3.0 | v6.6.9_20220914 9:57:19.2466 | 3.7、3.8、3.9 |
+| 3.1 | v6.6.9_20220914 9:57:19.2466 | 3.7、3.8、3.9 |
 
 # 入门视频教程
 
@@ -174,7 +174,11 @@ pl_parameter = {
 
 ## 7、订阅全市场行情并落地为csv文件
 
-期货合约都是有期限的，订阅全市场行情需要先使用`AlgoPlus.CTP.TraderApi.run_query_instrument`查询当前挂牌交易的所有合约，然后再交给`run_mdrecorder`订阅并存储。`subscribe_all.py`演示了具体如何使用。
+期货合约都是有期限的，订阅全市场行情需要先使用`AlgoPlus.CTP.QueryInstrumentHelper.run_query_instrument`查询当前挂牌交易的所有合约，然后再交给`run_mdrecorder`订阅并存储。`subscribe_all.py`演示了具体如何使用。
+
+## 8、长短期均线例子
+
+`example/long_short_ma_global.py`和`example/long_short_ma_multiprocessing.py`演示了如何编写行情驱动型策略。前者使用全局变量，MdApi收到行情通知`OnRtnDepthMarketData`后计算均线，符合条件则使用`TraderApi`实例报单。后者使用多进程，MdApi收到行情后放入所有绑定的队列中（一个MdApi可以绑定多个队列，创建实例时传入），`TraderApi`通过轮询从共享队列中取行情，然后判断是否报单。
 
 # 仿真交易测试
 
